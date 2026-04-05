@@ -62,8 +62,7 @@ export default function MatrixBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full opacity-60 pointer-events-none mix-blend-screen z-0 overflow-visible"
-      style={{ minHeight: "100vh" }}
+      className="fixed inset-0 w-full h-full opacity-80 pointer-events-none mix-blend-screen z-0 pointer-events-none"
     />
   );
 }
