@@ -20,7 +20,7 @@ export default function RegisterPage() {
             Terminal <span className="text-orange">Access</span>
           </h1>
           <p className="text-sm md:text-base text-cyan tracking-[0.2em] max-w-2xl mx-auto px-4 font-tech uppercase">
-            // Secure your spot in the ultimate tech event //
+            {"// Secure your spot in the ultimate tech event //"}
           </p>
         </div>
 

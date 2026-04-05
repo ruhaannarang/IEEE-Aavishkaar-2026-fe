@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { RegistrationFormValues } from "@/lib/validations/registration";
 
-export const ReceiptSuccessCard = ({ data, onReset }: { data: RegistrationFormValues, onReset: () => void }) => {
+export const ReceiptSuccessCard = ({ data }: { data: RegistrationFormValues, onReset: () => void }) => {
   const [isPrinting, setIsPrinting] = useState(false);
 
   useEffect(() => {
@@ -100,11 +100,11 @@ export const ReceiptSuccessCard = ({ data, onReset }: { data: RegistrationFormVa
             </table>
 
             <div className="receipt-message text-[#00ded4] mt-2 mb-1 tracking-[0.2em] border-t border-dashed border-[#00ded4] pt-3 text-center text-[10px]">
-              // CLEARANCE.GRANTED //
+              {"// CLEARANCE.GRANTED //"}
             </div>
 
             <div className="mt-6 mb-2 w-full text-center text-[#ff5f34] font-space font-bold uppercase tracking-[0.3em] text-[11px] opacity-90">
-              // ALL_THE_BEST //
+              {"// ALL_THE_BEST //"}
             </div>
           </div>
         </div>

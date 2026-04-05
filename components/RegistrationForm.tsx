@@ -61,7 +61,7 @@ export default function RegistrationForm() {
       const text = await response.text();
       try {
         result = JSON.parse(text);
-      } catch (e) {
+      } catch {
         throw new Error("Server returned invalid non-JSON response.");
       }
 
@@ -103,7 +103,7 @@ export default function RegistrationForm() {
         <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-orange translate-x-[2px] translate-y-[2px]" />
 
         <div className="mb-10 text-center">
-          <p className="text-cyan font-space text-xs tracking-[0.3em] uppercase mb-2">// EXECUTE REGISTRATION PROTOCOL //</p>
+          <p className="text-cyan font-space text-xs tracking-[0.3em] uppercase mb-2">{"// EXECUTE REGISTRATION PROTOCOL //"}</p>
           <h2 className="text-3xl font-space font-bold text-white uppercase tracking-widest">
             Team <span className="text-orange">Registrations</span>
           </h2>
