@@ -1,8 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-const navLinks = ["Home", "Events", "Schedule", "Team", "Contact"];
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Events", href: "/events" },
+  { label: "Schedule", href: "/schedule" },
+  { label: "Team", href: "/team" },
+  { label: "Contact", href: "/contact" },
+] as const;
 
 const CyberLogo = () => (
   <div className="flex flex-col leading-none">
@@ -17,9 +25,13 @@ const CyberLogo = () => (
 );
 
 export default function Navbar() {
-  const [activeLink, setActiveLink] = useState("Home");
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  /** Check if a nav item is active based on the current pathname */
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   // Handle Navbar Background Scroll
   useEffect(() => {
@@ -39,6 +51,14 @@ export default function Navbar() {
       document.body.style.overflow = "unset";
     };
   }, [mobileOpen]);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  const centerLinks = navItems.slice(0, -1);
+  const farRightLink = navItems[navItems.length - 1];
 
   return (
     <header
@@ -62,57 +82,64 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 relative">
           {/* Logo (Far Left) */}
-          <CyberLogo />
+          <Link href="/" aria-label="Home">
+            <CyberLogo />
+          </Link>
 
           {/* Desktop Nav - Split into Center and Far Right */}
           <nav className="hidden md:flex flex-1 items-center justify-end h-full">
             {/* Main Links (Perfectly Centered Group) */}
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-3 lg:gap-6">
-              {navLinks.slice(0, -1).map((link) => (
-                <button
-                  key={link}
-                  onClick={() => setActiveLink(link)}
-                  className="relative inline-flex h-10 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-[#050a14] shadow-[0_0_10px_rgba(249,115,22,0.2)] transition-shadow duration-300 hover:shadow-[0_0_20px_rgba(249,115,22,0.5)] group"
-                >
-                  <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#431407_0%,#f97316_50%,#431407_100%)]" />
-                  <span
-                    className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-[#050a14] px-5 py-1 text-xs font-semibold backdrop-blur-3xl tracking-[0.15em] uppercase transition-colors duration-300"
-                    style={{ color: activeLink === link ? "#fb923c" : "#94a3b8" }}
-                    onMouseEnter={(e) => {
-                      if (activeLink !== link) (e.currentTarget as HTMLSpanElement).style.color = "#fdba74";
-                    }}
-                    onMouseLeave={(e) => {
-                      if (activeLink !== link) (e.currentTarget as HTMLSpanElement).style.color = "#94a3b8";
-                    }}
+              {centerLinks.map((item) => {
+                const active = isActive(item.href);
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="relative inline-flex h-10 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-[#050a14] shadow-[0_0_10px_rgba(249,115,22,0.2)] transition-shadow duration-300 hover:shadow-[0_0_20px_rgba(249,115,22,0.5)] group"
                   >
-                    {link}
-                  </span>
-                </button>
-              ))}
+                    <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#431407_0%,#f97316_50%,#431407_100%)]" />
+                    <span
+                      className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-[#050a14] px-5 py-1 text-xs font-semibold backdrop-blur-3xl tracking-[0.15em] uppercase transition-colors duration-300"
+                      style={{ color: active ? "#fb923c" : "#94a3b8" }}
+                      onMouseEnter={(e) => {
+                        if (!active) (e.currentTarget as HTMLSpanElement).style.color = "#fdba74";
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!active) (e.currentTarget as HTMLSpanElement).style.color = "#94a3b8";
+                      }}
+                    >
+                      {item.label}
+                    </span>
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Contact Link (Far Right) */}
-            {navLinks.slice(-1).map((link) => (
-              <button
-                key={link}
-                onClick={() => setActiveLink(link)}
-                className="relative inline-flex h-10 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-[#050a14] shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-shadow duration-300 hover:shadow-[0_0_20px_rgba(249,115,22,0.5)] group"
-              >
-                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#431407_0%,#f97316_50%,#431407_100%)]" />
-                <span
-                  className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-[#050a14] px-6 py-1 text-xs font-semibold backdrop-blur-3xl tracking-[0.15em] uppercase transition-colors duration-300"
-                  style={{ color: activeLink === link ? "#fb923c" : "#94a3b8" }}
-                  onMouseEnter={(e) => {
-                    if (activeLink !== link) (e.currentTarget as HTMLSpanElement).style.color = "#fdba74";
-                  }}
-                  onMouseLeave={(e) => {
-                    if (activeLink !== link) (e.currentTarget as HTMLSpanElement).style.color = "#94a3b8";
-                  }}
+            {(() => {
+              const active = isActive(farRightLink.href);
+              return (
+                <Link
+                  href={farRightLink.href}
+                  className="relative inline-flex h-10 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-[#050a14] shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-shadow duration-300 hover:shadow-[0_0_20px_rgba(249,115,22,0.5)] group"
                 >
-                  {link}
-                </span>
-              </button>
-            ))}
+                  <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#431407_0%,#f97316_50%,#431407_100%)]" />
+                  <span
+                    className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-[#050a14] px-6 py-1 text-xs font-semibold backdrop-blur-3xl tracking-[0.15em] uppercase transition-colors duration-300"
+                    style={{ color: active ? "#fb923c" : "#94a3b8" }}
+                    onMouseEnter={(e) => {
+                      if (!active) (e.currentTarget as HTMLSpanElement).style.color = "#fdba74";
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!active) (e.currentTarget as HTMLSpanElement).style.color = "#94a3b8";
+                    }}
+                  >
+                    {farRightLink.label}
+                  </span>
+                </Link>
+              );
+            })()}
           </nav>
 
           {/* Hamburger */}
@@ -152,25 +179,26 @@ export default function Navbar() {
             background: "rgba(2,5,9,0.98)",
           }}
         >
-          {navLinks.map((link) => (
-            <button
-              key={link}
-              onClick={() => {
-                setActiveLink(link);
-                setMobileOpen(false);
-              }}
-              className="text-left px-4 py-3 text-xs font-semibold tracking-[0.15em] uppercase rounded-sm transition-all duration-200"
-              style={{
-                color: activeLink === link ? "#fb923c" : "#94a3b8",
-                border: activeLink === link ? "1px solid rgba(249,115,22,0.4)" : "1px solid transparent",
-                background: activeLink === link ? "rgba(67,20,7,0.4)" : "transparent",
-                boxShadow: activeLink === link ? "0 0 10px rgba(249,115,22,0.15)" : "none",
-              }}
-            >
-              <span className="mr-2 text-orange-700">›</span>
-              {link}
-            </button>
-          ))}
+          {navItems.map((item) => {
+            const active = isActive(item.href);
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                onClick={() => setMobileOpen(false)}
+                className="text-left px-4 py-3 text-xs font-semibold tracking-[0.15em] uppercase rounded-sm transition-all duration-200"
+                style={{
+                  color: active ? "#fb923c" : "#94a3b8",
+                  border: active ? "1px solid rgba(249,115,22,0.4)" : "1px solid transparent",
+                  background: active ? "rgba(67,20,7,0.4)" : "transparent",
+                  boxShadow: active ? "0 0 10px rgba(249,115,22,0.15)" : "none",
+                }}
+              >
+                <span className="mr-2 text-orange-700">›</span>
+                {item.label}
+              </Link>
+            );
+          })}
         </div>
       </div>
 
