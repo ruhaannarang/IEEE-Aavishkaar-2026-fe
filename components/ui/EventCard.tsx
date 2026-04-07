@@ -97,6 +97,109 @@ function MatrixBanner({
 }
 
 /* ── Main Component: EventCard ──────────────────────────────────────────────── */
+// export function EventCard({ event }: { event: TechfestEvent }) {
+//   const [hovered, setHovered] = useState(false);
+//   const [btnHovered, setBtnHovered] = useState(false);
+
+//   const theme = THEMES[event.slug] || DEFAULT_THEME;
+//   const dateObj = new Date(event.dateTime);
+//   const displayDate = dateObj.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+//   const displayTime = dateObj.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+
+//   return (
+//     <Link href={`/events/${event.slug}`} className="block no-underline group">
+//       <div
+//         onMouseEnter={() => setHovered(true)}
+//         onMouseLeave={() => setHovered(false)}
+//         style={{
+//           position: "relative",
+//           width: "100%",
+//           borderRadius: 12,
+//           background: "#0f0f17",
+//           border: `1.5px solid ${hovered ? theme.glow : "rgba(255,255,255,0.08)"}`,
+//           boxShadow: hovered ? `0 0 30px ${theme.glow}33` : "none",
+//           transform: hovered ? "translateY(-5px)" : "none",
+//           transition: "all 0.4s cubic-bezier(0.33, 1, 0.68, 1)",
+//           overflow: "hidden",
+//         }}
+//       >
+//         <MatrixBanner
+//           accentColor={theme.accent}
+//           glowColor={theme.glow}
+//           secondaryGlow={theme.secondary}
+//           emoji={theme.emoji}
+//           hovered={hovered}
+//         />
+
+//         {/* Info Strip */}
+//         <div className="flex bg-black/40 border-y border-white/5 font-mono text-[10px] text-gray-500 uppercase">
+//           <div className="flex-1 p-2 text-center border-r border-white/5">
+//             {displayTime}
+//           </div>
+//           <div className="flex-1 p-2 text-center border-r border-white/5">
+//             {displayDate}
+//           </div>
+//           <div className="flex-1 p-2 text-center">
+//             TEAM: {event.minTeamSize}-{event.maxTeamSize}
+//           </div>
+//         </div>
+
+//         {/* Coordinators */}
+//         <div className="px-4 py-3 flex flex-wrap gap-x-5 gap-y-2 bg-black/40 border-b border-white/10 font-mono text-xs">
+//           {event.coordinators.map((c, i) => (
+//             <div key={i} className="flex gap-2 items-center">
+//               <span
+//                 style={{ color: theme.accent }}
+//                 className="font-bold uppercase tracking-wider"
+//               >
+//                 {c.name}
+//               </span>
+//               <span className="text-gray-300 font-medium">
+//                 {c.contactNumber}
+//               </span>
+//               {i < event.coordinators.length - 1 && (
+//                 <span className="text-gray-600">|</span>
+//               )}
+//             </div>
+//           ))}
+//         </div>
+
+//         {/* Body */}
+//         <div className="p-5">
+//           <h3 className="font-mono font-black text-2xl text-white mb-2 uppercase tracking-tight">
+//             {event.title}
+//           </h3>
+//           <p className="text-sm text-gray-500 line-clamp-2 mb-5 leading-relaxed">
+//             {event.tagline || event.description}
+//           </p>
+
+//           <button
+//             onMouseEnter={() => setBtnHovered(true)}
+//             onMouseLeave={() => setBtnHovered(false)}
+//             style={{
+//               width: "100%",
+//               padding: "12px 0",
+//               fontFamily: "monospace",
+//               fontWeight: 900,
+//               fontSize: "12px",
+//               letterSpacing: "0.2em",
+//               borderRadius: "4px",
+//               background: btnHovered ? theme.accent : "transparent",
+//               color: btnHovered ? "#000" : theme.accent,
+//               border: `1px solid ${theme.accent}`,
+//               transition: "all 0.3s",
+//               cursor: "pointer",
+//             }}
+//           >
+//             INITIALIZE PROTOCOL →
+//           </button>
+//         </div>
+//       </div>
+//     </Link>
+//   );
+// }
+
+/* ── Main Component: EventCard ──────────────────────────────────────────────── */
 export function EventCard({ event }: { event: TechfestEvent }) {
   const [hovered, setHovered] = useState(false);
   const [btnHovered, setBtnHovered] = useState(false);
@@ -133,33 +236,27 @@ export function EventCard({ event }: { event: TechfestEvent }) {
 
         {/* Info Strip */}
         <div className="flex bg-black/40 border-y border-white/5 font-mono text-[10px] text-gray-500 uppercase">
-          <div className="flex-1 p-2 text-center border-r border-white/5">
-            {displayTime}
-          </div>
-          <div className="flex-1 p-2 text-center border-r border-white/5">
-            {displayDate}
-          </div>
-          <div className="flex-1 p-2 text-center">
-            TEAM: {event.minTeamSize}-{event.maxTeamSize}
-          </div>
+          <div className="flex-1 p-2 text-center border-r border-white/5">{displayTime}</div>
+          <div className="flex-1 p-2 text-center border-r border-white/5">{displayDate}</div>
+          <div className="flex-1 p-2 text-center">TEAM: {event.minTeamSize}-{event.maxTeamSize}</div>
         </div>
 
-        {/* Coordinators */}
-        <div className="px-4 py-3 flex flex-wrap gap-x-5 gap-y-2 bg-black/40 border-b border-white/10 font-mono text-xs">
-          {event.coordinators.map((c, i) => (
-            <div key={i} className="flex gap-2 items-center">
-              <span
-                style={{ color: theme.accent }}
-                className="font-bold uppercase tracking-wider"
+        {/* Prize Pool Section - NEW */}
+        <div className="grid grid-cols-3 border-b border-white/5 bg-black/20">
+          {event.prizePool.map((p, idx) => (
+            <div 
+              key={idx} 
+              className={`p-3 text-center ${idx < 2 ? 'border-r border-white/5' : ''}`}
+            >
+              <div className="text-[9px] uppercase tracking-tighter text-gray-500 mb-1">
+                {p.position === 1 ? '1ST' : p.position === 2 ? '2ND' : '3RD'} PRIZE
+              </div>
+              <div 
+                className="font-mono font-bold text-sm" 
+                style={{ color: hovered ? theme.accent : 'white', transition: 'color 0.4s' }}
               >
-                {c.name}
-              </span>
-              <span className="text-gray-300 font-medium">
-                {c.contactNumber}
-              </span>
-              {i < event.coordinators.length - 1 && (
-                <span className="text-gray-600">|</span>
-              )}
+                ₹{p.amount.toLocaleString()}
+              </div>
             </div>
           ))}
         </div>
@@ -172,6 +269,15 @@ export function EventCard({ event }: { event: TechfestEvent }) {
           <p className="text-sm text-gray-500 line-clamp-2 mb-5 leading-relaxed">
             {event.tagline || event.description}
           </p>
+
+          {/* Coordinators moved here for cleaner flow */}
+          <div className="mb-5 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[10px]">
+            {event.coordinators.map((c, i) => (
+              <span key={i} className="text-gray-400">
+                <span style={{ color: theme.accent }}>●</span> {c.name}
+              </span>
+            ))}
+          </div>
 
           <button
             onMouseEnter={() => setBtnHovered(true)}
