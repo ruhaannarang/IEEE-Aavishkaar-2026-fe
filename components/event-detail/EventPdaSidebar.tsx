@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { TechfestEvent } from "../../types/event";
-import { capacityPercent } from "../../mocks/events";
 import { RegisterButton } from "./RegisterButton";
+import "../../styles/event-detail-pda.css";
 import "../../styles/event-detail-pda.css";
 
 type PdaTab = "status" | "map" | "info" | "sys";
@@ -20,9 +20,9 @@ export function EventPdaSidebar({
   const [boot, setBoot] = useState(true);
   const [clock, setClock] = useState(() => new Date());
 
-  const pct = capacityPercent(event);
   const reg = event.registrationCount ?? 0;
   const cap = event.maxCapacity;
+  const pct = cap > 0 ? Math.min(100, Math.round((reg / cap) * 100)) : 0;
   const isFull = reg >= cap;
 
   // Boot sequence simulation
@@ -67,8 +67,8 @@ export function EventPdaSidebar({
     pct >= 100
       ? "AT CAPACITY"
       : pct >= 80
-      ? "NEAR CAP"
-      : `${reg}/${cap} ENROLLED`;
+        ? "NEAR CAP"
+        : `${reg}/${cap} ENROLLED`;
 
   return (
     <div className="lg:sticky lg:top-24 space-y-8 relative z-10 flex flex-col items-center">
@@ -231,7 +231,7 @@ export function EventPdaSidebar({
                   className={`event-pda__db ${tab === key ? "event-pda__db--active" : ""}`}
                   onClick={() => setTab(key)}
                 >
-                   <div className="event-pda__ico-placeholder" />
+                  <div className="event-pda__ico-placeholder" />
                 </button>
               ))}
             </div>
@@ -241,10 +241,10 @@ export function EventPdaSidebar({
 
       {/* --- CYBER REGISTRATION BUTTON --- */}
       <div className="w-full px-2">
-        <RegisterButton 
-          slug={event.slug} 
-          canRegister={canRegister} 
-          isFull={isFull} 
+        <RegisterButton
+          eventId={event._id || ''}
+          canRegister={canRegister}
+          isFull={isFull}
         />
       </div>
     </div>

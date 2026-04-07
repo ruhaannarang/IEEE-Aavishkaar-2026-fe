@@ -1,57 +1,45 @@
 import type { TechfestEvent } from '@/types/event'
-import { getEventBySlug, mockEvents } from '@/mocks/events'
+import type { RegistrationFormValues } from '@/lib/validations/registration'
 
-const base = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, '') ?? ''
+// Default to local backend if .env isn't set
+const base = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, '') ?? 'http://localhost:8000'
 
-function delay(ms: number) {
-  return new Promise((r) => setTimeout(r, ms))
-}
-
-/** List visible events — uses API when NEXT_PUBLIC_API_BASE_URL is set, else mocks. */
+/** List visible events — uses API */
 export async function fetchEvents(): Promise<TechfestEvent[]> {
-  if (!base) {
-    await delay(200)
-    return mockEvents.filter((e) => e.isVisible)
-  }
   const res = await fetch(`${base}/api/events`)
   if (!res.ok) throw new Error('Failed to load events')
   return res.json() as Promise<TechfestEvent[]>
 }
 
+/** Fetch specific event by slug */
 export async function fetchEventBySlug(slug: string): Promise<TechfestEvent | null> {
-  if (!base) {
-    await delay(150)
-    const e = getEventBySlug(slug)
-    return e && e.isVisible ? e : null
-  }
   const res = await fetch(`${base}/api/events/${encodeURIComponent(slug)}`)
   if (res.status === 404) return null
   if (!res.ok) throw new Error('Failed to load event')
   return res.json() as Promise<TechfestEvent>
 }
 
-export interface RegistrationPayload {
+export interface RegistrationResponse {
+  ok: boolean
+  referenceId: string
   eventSlug: string
-  teamName: string
-  leadEmail: string
-  leadPhone: string
-  memberNames: string[]
+  message: string
 }
 
 export async function submitRegistration(
-  payload: RegistrationPayload
-): Promise<{ ok: true; referenceId: string }> {
-  if (!base) {
-    await delay(400)
-    const ref = `TF-${payload.eventSlug.slice(0, 4).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`
-    return { ok: true, referenceId: ref }
-  }
-  const res = await fetch(`${base}/api/registrations`, {
+  eventId: string,
+  payload: RegistrationFormValues
+): Promise<RegistrationResponse> {
+  const res = await fetch(`${base}/api/registrations/${eventId}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   })
-  if (!res.ok) throw new Error('Registration failed')
-  const data = (await res.json()) as { referenceId: string }
-  return { ok: true, referenceId: data.referenceId }
+  
+  if (!res.ok) {
+    const err = await res.json()
+    throw new Error(err.error || 'Registration failed')
+  }
+  
+  return res.json() as Promise<RegistrationResponse>
 }

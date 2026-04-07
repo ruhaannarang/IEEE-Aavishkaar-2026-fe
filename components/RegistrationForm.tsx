@@ -3,8 +3,10 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { RegistrationSchema, RegistrationFormValues } from "@/lib/validations/registration";
 import { ReceiptSuccessCard } from "./ReceiptSuccessCard";
+import { submitRegistration, fetchEvents } from "@/lib/client";
 
 export default function RegistrationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -12,18 +14,21 @@ export default function RegistrationForm() {
   const [submittedData, setSubmittedData] = useState<RegistrationFormValues | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
   const [maxMembers, setMaxMembers] = useState<number>(3);
-
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, '') ?? '';
+  const searchParams = useSearchParams();
+  const eventId = searchParams.get("eventId") || "";
+  const [successSlug, setSuccessSlug] = useState("");
 
   useEffect(() => {
-    const settingsUrl = `${apiBase}/api/settings`;
-    fetch(settingsUrl)
-      .then((res) => res.ok ? res.json() : Promise.reject("404"))
-      .then((data) => {
-        if (data.maxMembers) setMaxMembers(data.maxMembers);
-      })
-      .catch(() => console.warn("Using default protocol limits."));
-  }, [apiBase]);
+    // Dynamic max members based on fetching all events and finding the active one
+    if (eventId) {
+      fetchEvents().then((events) => {
+        const currentEvent = events.find((e) => e._id === eventId);
+        if (currentEvent && currentEvent.maxTeamSize) {
+          setMaxMembers(currentEvent.maxTeamSize);
+        }
+      }).catch(() => console.warn("Using default protocol limits."));
+    }
+  }, [eventId]);
 
   const { register, control, handleSubmit, formState: { errors } } = useForm<RegistrationFormValues>({
     resolver: zodResolver(RegistrationSchema),
@@ -63,25 +68,26 @@ export default function RegistrationForm() {
   //     setIsSubmitting(false);
   //   }
   // };
-const onSubmit = async (data: RegistrationFormValues) => {
+  const onSubmit = async (data: RegistrationFormValues) => {
     setIsSubmitting(true);
     setErrorMsg("");
 
-    try {
-      // --- MOCK BACKEND SIMULATION ---
-      // 1. Simulate a 1.5 second network delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+    if (!eventId) {
+      setErrorMsg("CRITICAL_ERR: Missing Event ID tracking context.");
+      setIsSubmitting(false);
+      return;
+    }
 
-      // 2. Automatically trigger a "Success" state
+    try {
+      const response = await submitRegistration(eventId, data);
+      
+      setSuccessSlug(response.eventSlug);
       setSubmittedData(data);
       setIsSuccess(true);
-      
-      // 3. Scroll to the top to view the receipt smoothly
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
     } catch (err) {
-      // This won't trigger in the mock, but good to keep the structure!
-      setErrorMsg("CRITICAL_ERR: Data packet corrupted during transmission.");
+      setErrorMsg((err as Error).message || "CRITICAL_ERR: Data packet corrupted during transmission.");
     } finally {
       setIsSubmitting(false);
     }
@@ -90,6 +96,7 @@ const onSubmit = async (data: RegistrationFormValues) => {
     return (
       <ReceiptSuccessCard 
         data={submittedData} 
+        eventSlug={successSlug}
         onReset={() => { setIsSuccess(false); setSubmittedData(null); }} 
       />
     );

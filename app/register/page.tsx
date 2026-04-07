@@ -1,3 +1,4 @@
+import React, { Suspense } from "react";
 import RegistrationForm from "@/components/RegistrationForm";
 import MatrixBackground from "@/components/MatrixBackground";
 import type { Metadata } from "next";
@@ -25,7 +26,9 @@ export default function RegisterPage() {
         </div>
 
         <div className="relative z-10 w-full flex justify-center">
-          <RegistrationForm />
+          <Suspense fallback={<div className="text-orange font-mono animate-pulse text-center p-8">Establishing terminal connection...</div>}>
+            <RegistrationForm />
+          </Suspense>
         </div>
       </div>
     </main>

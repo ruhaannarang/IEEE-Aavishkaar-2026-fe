@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 
-export function RegisterButton({ slug, canRegister, isFull }: { slug: string, canRegister: boolean, isFull: boolean }) {
+export function RegisterButton({ eventId, canRegister, isFull }: { eventId: string, canRegister: boolean, isFull: boolean }) {
   return (
     <div className="flex flex-col items-center w-full px-2">
       <Link
-        href={canRegister ? `/register` : "#"}
+        href={canRegister ? `/register?eventId=${eventId}` : "#"}
         onClick={(e) => !canRegister && e.preventDefault()}
         className={`
           relative group w-full py-5 px-16 

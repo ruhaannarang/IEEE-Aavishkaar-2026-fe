@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { RegistrationFormValues } from "@/lib/validations/registration";
 
-export const ReceiptSuccessCard = ({ data }: { data: RegistrationFormValues, onReset: () => void }) => {
+export const ReceiptSuccessCard = ({ data, eventSlug, onReset }: { data: RegistrationFormValues, eventSlug?: string, onReset: () => void }) => {
   const [isPrinting, setIsPrinting] = useState(false);
 
   useEffect(() => {
@@ -14,9 +14,17 @@ export const ReceiptSuccessCard = ({ data }: { data: RegistrationFormValues, onR
     return () => clearTimeout(t);
   }, []);
 
-  // Dynamically compute absolute wrapper height based on the number of members so the receipt 
-  // pushes all the page content down naturally, staying relative to the main layout size.
   const computedHeight = 580 + (data.teamMembers.length * 45);
+
+  const whatsAppLinks: Record<string, string> = {
+    'ispy_event': 'https://chat.whatsapp.com/LuyJN3Dfbxv0C3A8pb6Vvp?mode=gi_t',
+    'i-spy-event-sb': 'https://chat.whatsapp.com/LuyJN3Dfbxv0C3A8pb6Vvp?mode=gi_t',
+    'robo_soccer': 'https://chat.whatsapp.com/LNUxD7IEoyX0d5vSNqQUX6?mode=gi_t',
+    'ispy': 'https://chat.whatsapp.com/LuyJN3Dfbxv0C3A8pb6Vvp?mode=gi_t',
+    'robo-soccer': 'https://chat.whatsapp.com/LNUxD7IEoyX0d5vSNqQUX6?mode=gi_t'
+  };
+
+  const activeWhatsAppLink = eventSlug ? whatsAppLinks[eventSlug.toLowerCase()] : null;
 
   return (
     <div
@@ -102,6 +110,19 @@ export const ReceiptSuccessCard = ({ data }: { data: RegistrationFormValues, onR
             <div className="receipt-message text-[#00ded4] mt-2 mb-1 tracking-[0.2em] border-t border-dashed border-[#00ded4] pt-3 text-center text-[10px]">
               {"// CLEARANCE.GRANTED //"}
             </div>
+
+            {activeWhatsAppLink && (
+              <div className="mt-6">
+                <a 
+                  href={activeWhatsAppLink} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-full block text-center bg-[#25D366] text-black font-bold py-3 uppercase tracking-widest text-[11px] rounded transition-transform hover:scale-105"
+                >
+                  [ JOIN WHATSAPP COMMS ]
+                </a>
+              </div>
+            )}
 
             <div className="mt-6 mb-2 w-full text-center text-[#ff5f34] font-space font-bold uppercase tracking-[0.3em] text-[11px] opacity-90">
               {"// ALL_THE_BEST //"}
