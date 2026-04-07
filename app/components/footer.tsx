@@ -303,7 +303,7 @@ export default function Footer() {
                   <li className="flex items-center gap-2">
                     <span className="text-orange-700">◈</span>
                     <a
-                      href="mailto:techfest@ritb.edu.in"
+                      href="mailto:ieeeritb@gmail.com"
                       className="transition-colors duration-200 hover:text-orange-400"
                     >
                       ieeeritb@gmail.com
