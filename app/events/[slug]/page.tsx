@@ -44,7 +44,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
           <img
             src={hero}
             alt=""
-            className="w-full h-full object-cover opacity-50 scale-105 transition-transform duration-1000"
+            className="w-full h-full object-cover object-[center_15%] opacity-50 scale-105 transition-transform duration-1000"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#05070d] via-transparent to-transparent z-20" />
           <div className="absolute inset-0 scanline opacity-15 pointer-events-none" />

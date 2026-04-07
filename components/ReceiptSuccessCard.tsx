@@ -93,7 +93,7 @@ export const ReceiptSuccessCard = ({ data }: { data: RegistrationFormValues, onR
                   </tr>
                 ))}
                 <tr className="text-[#ff5f34]">
-                  <td colSpan={1} className="py-2 font-bold pt-4">TOTAL_UNITS</td>
+                  <td colSpan={1} className="py-2 font-bold pt-4">TOTAL_MEMBERS</td>
                   <td colSpan={1} className="py-2 text-right font-bold pt-4">{data.teamMembers.length + 1}</td>
                 </tr>
               </tbody>

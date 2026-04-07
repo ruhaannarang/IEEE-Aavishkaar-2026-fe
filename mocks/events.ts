@@ -10,7 +10,7 @@ export const mockEvents: TechfestEvent[] = [
     slug: 'ispy',
     tagline: 'Silicon Valley themed Treasure Hunt',
     description: 'A full-day elimination-based treasure hunt. Participants solve binary puzzles, tech item guesses, and logic gate problems across RIT Campus blocks named after Silicon Valley companies, leading to high-stakes escape rooms.',
-    posterURL: poster,
+    posterURL: '/events/ispy.jpeg',
     dateTime: new Date('2026-04-11T08:00:00Z').toISOString(),
     venue: 'RIT Campus (Various Blocks)',
     prizePool: [
@@ -61,7 +61,7 @@ export const mockEvents: TechfestEvent[] = [
     slug: 'robo-soccer',
     tagline: 'Understand the system by decoding its behavior',
     description: 'A 2v2 robo soccer tournament on an 8x5 meter field. Features bracket-style progression with evolving mechanics like inverted controls and "No Brake" full-throttle mode in the finale.',
-    posterURL: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&q=80',
+    posterURL: '/events/robosoccer.jpeg',
     dateTime: new Date('2026-04-11T10:00:00Z').toISOString(),
     venue: 'TBD',
     prizePool: [

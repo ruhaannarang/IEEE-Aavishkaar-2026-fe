@@ -35,35 +35,57 @@ export default function RegistrationForm() {
 
   const { fields, append, remove } = useFieldArray({ name: "teamMembers", control });
 
-  const onSubmit = async (data: RegistrationFormValues) => {
+  // const onSubmit = async (data: RegistrationFormValues) => {
+  //   setIsSubmitting(true);
+  //   setErrorMsg("");
+
+  //   try {
+  //     const response = await fetch(`${apiBase}/api/register`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(data),
+  //     });
+
+  //     const text = await response.text();
+  //     let result;
+  //     try { result = JSON.parse(text); } catch { throw new Error("NON_JSON_RESPONSE"); }
+
+  //     if (!response.ok) {
+  //       setErrorMsg(result.message || "Uplink rejected by Central Command.");
+  //     } else {
+  //       setSubmittedData(data);
+  //       setIsSuccess(true);
+  //       window.scrollTo({ top: 0, behavior: 'smooth' });
+  //     }
+  //   } catch (err) {
+  //     setErrorMsg("CRITICAL_ERR: Data packet corrupted during transmission.");
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+const onSubmit = async (data: RegistrationFormValues) => {
     setIsSubmitting(true);
     setErrorMsg("");
 
     try {
-      const response = await fetch(`${apiBase}/api/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      // --- MOCK BACKEND SIMULATION ---
+      // 1. Simulate a 1.5 second network delay
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      const text = await response.text();
-      let result;
-      try { result = JSON.parse(text); } catch { throw new Error("NON_JSON_RESPONSE"); }
+      // 2. Automatically trigger a "Success" state
+      setSubmittedData(data);
+      setIsSuccess(true);
+      
+      // 3. Scroll to the top to view the receipt smoothly
+      window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      if (!response.ok) {
-        setErrorMsg(result.message || "Uplink rejected by Central Command.");
-      } else {
-        setSubmittedData(data);
-        setIsSuccess(true);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
     } catch (err) {
+      // This won't trigger in the mock, but good to keep the structure!
       setErrorMsg("CRITICAL_ERR: Data packet corrupted during transmission.");
     } finally {
       setIsSubmitting(false);
     }
   };
-
   if (isSuccess && submittedData) {
     return (
       <ReceiptSuccessCard 
