@@ -24,7 +24,7 @@ export default function RegistrationForm() {
       fetchEvents().then((events) => {
         const currentEvent = events.find((e) => e._id === eventId);
         if (currentEvent && currentEvent.maxTeamSize) {
-          setMaxMembers(currentEvent.maxTeamSize);
+          setMaxMembers(currentEvent.maxTeamSize - 1);
         }
       }).catch(() => console.warn("Using default protocol limits."));
     }
