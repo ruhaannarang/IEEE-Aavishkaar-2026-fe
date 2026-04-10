@@ -21,11 +21,8 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
   // Visual Assets
   const hero = event.posterURL ?? "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1400&q=80";
   
-  // Strict Registration Logic
-  const currentCount = event.registrationCount ?? 0;
-  const isFull = currentCount >= event.maxCapacity;
-  const isOpen = event.registrationStatus === "OPEN";
-  const canRegister = isOpen && !isFull;
+  // Registration closed
+  const canRegister = false;
 
   return (
     <div className="relative min-h-screen bg-[#05070d] text-on-surface selection:bg-orange/30">
