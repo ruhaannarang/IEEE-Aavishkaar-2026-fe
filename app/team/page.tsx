@@ -1,7 +1,10 @@
+
+import TeamPage from "@/components/TeamPage";
+
 export default function Team() {
-    return (
-        <main className="relative flex-grow">
-            <h1>Team</h1>
-        </main>
-    );
+  return (
+    <div className="relative flex-grow pt-16 bg-[#070810]">
+      <TeamPage />
+    </div>
+  );
 }
