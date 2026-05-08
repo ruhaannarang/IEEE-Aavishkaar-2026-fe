@@ -27,7 +27,8 @@ const teamMembers: Member[] = [
   { id: 13, name: "Sanskar Tiwari", role: "Execom", image: "https://avatars.githubusercontent.com/u/256406371?s=400&u=18145e323a182ce44a9cb192aa0015e28ca0af1e&v=4", linkedin: "https://www.linkedin.com/in/sanskar-tiwari-24b826394?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
   { id: 14, name: "Sai Ranjith R", role: "Execom", image: "https://user6858.na.imgto.link/public/20260407/photo-2026-04-07-17-34-08.avif", linkedin: "https://www.linkedin.com/in/sai-ranjith-r-8a5609384?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
   { id: 15, name: "Archee Khandelwal", role: "Execom", image: "https://user6853.na.imgto.link/public/20260407/b380a9f9-705a-482a-b946-700e91c0dcf1.avif", linkedin: "https://www.linkedin.com/in/archee-khandelwal-4a84932b5/" },
-  { id: 16, name: "Pragati Singh", role: "Execom", image: "https://media.licdn.com/dms/image/v2/D5603AQFJcSfmL7s50w/profile-displayphoto-scale_200_200/B56Z1oacD6KgAY-/0/1775573263147?e=1776902400&v=beta&t=M5kLuPq6RkcxPWP_cv7eetGHiorEQLi4b4_gESviVjE", linkedin: "https://www.linkedin.com/in/pragati-singh-859319387/" }
+  { id: 16, name: "Raksha R", role: "Execom", image: "https://user6853.na.imgto.link/public/20260508/1778252447506.avif", linkedin: "https://www.linkedin.com/in/raksha-r-993834373/" },
+  { id: 17, name: "Pragati Singh", role: "Execom", image: "https://media.licdn.com/dms/image/v2/D5603AQFJcSfmL7s50w/profile-displayphoto-scale_200_200/B56Z1oacD6KgAY-/0/1775573263147?e=1776902400&v=beta&t=M5kLuPq6RkcxPWP_cv7eetGHiorEQLi4b4_gESviVjE", linkedin: "https://www.linkedin.com/in/pragati-singh-859319387/" }
 
 ];
 
